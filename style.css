@@ -84,3 +84,31 @@ p{
     background: rgba(0, 0, 0, 0.08);
     background: #6e90a2
 }
+#rectangle_2{
+    position: absolute;
+    width: 75%;
+    height: 654px;
+    left: 13%;
+    top: 682px;
+
+    background: #cbcaff;
+    border-radius: 12px;
+}
+.fw-normal{
+    position: absolute;
+    width: 500px;
+    height: 38px;
+    left: 15%;
+    top: 720px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    /* identical to box height */
+
+    letter-spacing: 0.02em;
+
+    color: #000000;
+}
