@@ -1,77 +1,57 @@
 <?php
-    include('config.php');
-    if (isset($_POST['registration'])) {
-        $login = $_POST['login'];
-        $last_name = $_POST['last_name'];
-        $first_name = $_POST['first_name'];
-        $patronymic = $_POST['patronymic'];
-        $password = $_POST['password'];
-        $bio = $_POST['bio'];
-        $password_hash = password_hash($password, PASSWORD_BCRYPT);
-        $query = $connection->prepare("SELECT * FROM users WHERE login=:login");
-        $query->bindParam("login", $login, PDO::PARAM_STR);
-        $query->execute();
-        if ($query->rowCount() > 0) {
-            echo '<p class="error">Этот логин уже зарегистрирован!</p>';
-        }
-        if ($query->rowCount() == 0) {
-            $query = $connection->prepare("INSERT INTO users(login, last_name, first_name, patronymic, password, bio) VALUES (:login, :last_name, :first_name, :patronymic, :password_hash,:bio)");
-            $query->bindParam("login", $login, PDO::PARAM_STR);
-            $query->bindParam("last_name", $last_name, PDO::PARAM_STR);
-            $query->bindParam("first_name", $first_name, PDO::PARAM_STR);
-            $query->bindParam("patronymic", $patronymic, PDO::PARAM_STR);
-            $query->bindParam("password_hash", $password_hash, PDO::PARAM_STR);
-            $query->bindParam("bio", $bio, PDO::PARAM_STR);
-            $result = $query->execute();
-            if ($result) {
-               header('login.php');
-            } else {
-                echo '<p class="error">Неверные данные!</p>';
-            }
-        }
-    }
+ include('config.php');
+ /*
+$login = filter_var(trim($_POST['login']), FILTER_SANITIZE_STRING); // Удаляет все лишнее и записываем значение в переменную //$login
+$name = filter_var(trim($_POST['name']), FILTER_SANITIZE_STRING);
+$pass = filter_var(trim($_POST['pass']), FILTER_SANITIZE_STRING); 
+$bio = filter_var(trim($_POST['bio']), FILTER_SANITIZE_STRING);
+$patronymic = filter_var(trim($_POST['patronymic']), FILTER_SANITIZE_STRING);
+
+if(mb_strlen($login) < 5 || mb_strlen($login) > 90){
+	echo "Недопустимая длина логина";
+	exit();
+}
+else if(mb_strlen($name) < 5){
+	echo "Недопустимая длина имени.";
+	exit();
+} // Проверяем длину имени 
+
+$pass = md5($pass."thisisforhabr"); // Создаем хэш из пароля
+
+$result1 = $mysql->query("SELECT * FROM `users` WHERE `login` = '$login'");
+$user1 = $result1->fetch_assoc(); // Конвертируем в массив
+if(!empty($user1)){
+	echo "Данный логин уже используется!";
+	exit();
+}*/
+
 ?>
 
-<DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-<meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic|Playfair+Display:400,700&subset=latin,cyrillic">
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
-        <link rel= "stylesheet" type="text/css" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="style.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-        <link rel="shortcut icon" href="cats.jpg" type="image/jpg">
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<title>Вход/Регистрация</title>
 </head>
 <body>
-<form method="post" action="" name="signup-form">
-<div class="form-element">
-<label>Ваш логин</label>
-<input type="text" name="login" pattern="[a-zA-Z0-9]+" required />
-</div>
-<div class="form-element">
-<label>Имя</label>
-<input type="text" name="last_name" required />
-</div>
-    <div class="form-element">
-        <label>Фамилия</label>
-        <input type="text" name="first_name" required />
-    </div>
-    <div class="form-element">
-        <label>Что вас интересует</label>
-        <input type="text" name="patronymic" required />
-    </div>
-<div class="form-element">
-<label>Пароль</label>
-<input type="password" name="password" required />
-</div>
-    <div class="form-element">
-        <label>Номер телефона</label>
-        <input type="text" name="bio" required />
-    </div>
-<button type="submit" name="register" value="register" href="login.php">Зарегистрироватся</button>
-</form>
 
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col">
+				<h1>Форма регистрации</h1>
+				<form action="check.php" method="post">
+					<input type="text" name="login" class="form-control" id="login" placeholder="Логин"><br>
+					<input type="text" name="name" class="form-control" id="name" placeholder="Имя"><br>
+					<input type="password" name="pass" class="form-control" id="pass" placeholder="Пароль"><br>
+					<button class="btn btn-success">Зарегистрироваться</button><br>
+				</form> 
+			</div>
+		</div>
+	</div>
+	
 </body>
 </html>

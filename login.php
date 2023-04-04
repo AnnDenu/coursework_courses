@@ -1,26 +1,24 @@
 <?php
     include "config.php";
+/*
+    $login = filter_var(trim($_POST['login']), FILTER_SANITIZE_STRING);
+    $pass = filter_var(trim($_POST['pass']), FILTER_SANITIZE_STRING);
 
-    if (isset($_POST['auth'])) {
-        $login = $_POST['login'];
-        $password = $_POST['password'];
-        $query = $connection->prepare("SELECT * FROM users WHERE login=:login");
-        $query->bindParam("login", $login, PDO::PARAM_STR);
-        $query->execute();
-        $result = $query->fetch(PDO::FETCH_ASSOC);
-        if (!$result) {
-            echo '<p class="error">Неверные пароль или имя пользователя!</p>';
-        } else {
-            if (password_verify($password, $result['password'])) {
-                $_SESSION['login'] = true;
-                $_SESSION['user_id'] = $result['id'];
-                $_SESSION['log_user'] = $result['login'];
-                header('Location: app.php');
-            }
-        }
+    if(count($user) == 0){
+        echo "Такой пользователь не найден.";
+        exit();
     }
+    else if(count($user) == 1){
+        echo "Логин или праоль введены неверно";
+        exit();
+    }
+    
+    setcookie('user', $user['name'], time() + 3600, "/");
+    
+    $mysql->close();
+    header('Location: login.php');
+*/
 ?>
-
 
 <DOCTYPE html>
 <html lang="en">
@@ -59,3 +57,7 @@
 </div>
 </body>
 </html>
+<?php 
+setcookie('user', $user['name'], time() - 3600, "/");
+header('Location: /');
+ ?>
